@@ -1,6 +1,6 @@
 # Sample_NN-_Experiment
 Breast Cancer Detection
-<H3>ENTER YOUR NAME</H3>
+<H3>Yogeshvar M</H3>
 <H3>ENTER YOUR REGISTER NO.</H3>
 <H3>EX. NO.1</H3>
 <H3>DATE</H3>
@@ -26,11 +26,64 @@ Step 9:Evaluate the model's accuracy by comparing the predicted labels (y_pred) 
 Step 10:Print the accuracy of the model.
 Step 11:Plot the error convergence during traini#ng using plt.plot() and plt.show().
 ## Program:
-Insert your code here
+```python
+import numpy as np
+import pandas as pd
+from sklearn.datasets import load_breast_cancer
+from sklearn.neural_network import MLPClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, confusion_matrix
+import matplotlib.pyplot as plt
 
+# Load Dataset
+data = load_breast_cancer()
+X = data.data
+y = data.target
+
+# Preprocess Dataset (optional DataFrame creation)
+df = pd.DataFrame(X, columns=data.feature_names)
+df['target'] = y
+
+# Normalize Dataset
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Split for Train and Test Data
+X_train, X_test, y_train, y_test = train_test_split(
+    X_scaled, y, test_size=0.2, random_state=42
+)
+
+# Create MLP and Train MLP
+mlp = MLPClassifier(
+    hidden_layer_sizes=(100, 50),
+    activation='relu',
+    solver='adam',
+    max_iter=500,
+    random_state=42
+)
+mlp.fit(X_train, y_train)
+
+# Predict with Test Data
+y_pred = mlp.predict(X_test)
+
+# Model Evaluation
+accuracy = accuracy_score(y_test, y_pred)
+print("Model Accuracy:", accuracy)
+
+cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:\n", cm)
+
+# Training Loss Characteristics
+plt.plot(mlp.loss_curve_)
+plt.xlabel("Iterations")
+plt.ylabel("Loss")
+plt.title("Training Loss Convergence")
+plt.show()
+```
 ## Output:
-Show your output as screenshots with graph
-
+![alt text](image.png)
+![alt text](image-1.png)
 ## Result:
 Thus, an ANN with MLP is constructed and trained to predict the breast cancer using python.
 
